@@ -77,7 +77,7 @@ data class LessonModel(
 data class Time(
     val start: LocalTime,
     val end: LocalTime,
-    val hours: String
+    val hours: Int
 ) {
     fun getString(): String {
         return "${start}-${end} $hours"

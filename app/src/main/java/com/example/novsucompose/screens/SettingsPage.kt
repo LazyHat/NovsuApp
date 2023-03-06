@@ -14,6 +14,6 @@ fun SettingsPage() {
         modifier = Modifier
             .fillMaxSize()
     ) {
-        Text(stringArrayResource(id = R.array.menu_items)[3])
+        Text(stringArrayResource(id = R.array.menu_items)[2])
     }
 }

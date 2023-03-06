@@ -52,7 +52,7 @@ private fun parseTimeFromData(element: Element): Time {
     return Time(
         LocalTime.parse(list.first()),
         LocalTime.parse(list.last().substring(0, 3) + "45"),
-        list.size.toString()
+        list.size
     )
 }
 

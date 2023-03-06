@@ -153,7 +153,15 @@ fun LessonCard(model: LessonModel) {
                 CardStroke(model.lessonType, R.drawable.ic_type)
                 CardStroke(model.lessonName, R.drawable.ic_lessonname)
             }
-            CardStroke(model.time.getString(), R.drawable.ic_schedule)
+            CardStroke(
+                "${model.time.getString()} ${
+                    when (model.time.hours) {
+                        0 -> ""
+                        1 -> stringResource(id = R.string.tt_time_one_hour)
+                        else -> stringResource(id = R.string.tt_time_few_hours)
+                    }
+                }", R.drawable.ic_schedule
+            )
             CardStroke(
                 model.subGroup,
                 R.drawable.ic_group,

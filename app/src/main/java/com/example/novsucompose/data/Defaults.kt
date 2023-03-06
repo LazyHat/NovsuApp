@@ -8,7 +8,7 @@ val EMPTY_MODEL = MainModel(
             "", listOf(
                 LessonModel(
                     Time(
-                        LocalTime.of(0, 0), LocalTime.of(0, 0), "null"
+                        LocalTime.of(0, 0), LocalTime.of(0, 0), 0
                     ), "", "", "", "", "", Week.All, ""
                 )
             )
