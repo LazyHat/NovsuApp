@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -27,15 +28,15 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun TimeTablePage(group: Group) {
+fun TimeTablePage(request: Request) {
     val pagerState = rememberPagerState()
     var fabState by remember { mutableStateOf(Week.All) }
     val scope = rememberCoroutineScope()
     val mainModel = remember { mutableStateOf(EMPTY_MODEL) }
     var error by remember { mutableStateOf(ErrorCodes.OK) }
-    LaunchedEffect(key1 = group, block = {
+    LaunchedEffect(key1 = request, block = {
         scope.launch(Dispatchers.IO) {
-            error = getData(group, mainModel)
+            error = getData(request, mainModel)
         }
     })
     Scaffold(bottomBar = { TabsBar(pagerState = pagerState, model = mainModel) },
@@ -74,7 +75,8 @@ fun TimeTablePage(group: Group) {
                         modifier = Modifier.fillMaxSize(), contentAlignment = Center
                     ) {
                         Text(
-                            text = "Загрузка$loadingS", style = TextStyle(fontSize = 20.sp)
+                            text = "${stringResource(id = R.string.loading)}$loadingS",
+                            style = TextStyle(fontSize = 20.sp)
                         )
                     }
                     LaunchedEffect(key1 = loadingS, block = {
@@ -103,7 +105,7 @@ fun WeekGroupFab(state: Week, update: (updatedWeek: Week) -> Unit) {
     ) {
         Text(
             when (val s = state.label) {
-                "" -> "Откл."
+                "" -> stringResource(id = R.string.tt_week_all)
                 else -> s
             }
         )
@@ -152,13 +154,21 @@ fun LessonCard(model: LessonModel) {
                 CardStroke(model.lessonName, R.drawable.ic_lessonname)
             }
             CardStroke(model.time.getString(), R.drawable.ic_schedule)
-            CardStroke(model.subGroup, R.drawable.ic_group, "Подгруппа")
+            CardStroke(
+                model.subGroup,
+                R.drawable.ic_group,
+                stringResource(id = R.string.tt_eg_subgroup)
+            )
             CardStroke(model.teacher, R.drawable.ic_teacher)
             CardStroke(
-                text = model.auditorium, iconResId = R.drawable.ic_auditorium, "Аудитория"
+                text = model.auditorium,
+                iconResId = R.drawable.ic_auditorium,
+                stringResource(R.string.tt_auditorium)
             )
             CardStroke(
-                text = model.week.label, iconResId = R.drawable.ic_week, "Неделя"
+                text = model.week.label,
+                iconResId = R.drawable.ic_week,
+                stringResource(id = R.string.tt_week)
             )
             CardStroke(text = model.description, iconResId = R.drawable.ic_description)
         }

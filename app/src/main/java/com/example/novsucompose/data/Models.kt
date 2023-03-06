@@ -1,5 +1,6 @@
 package com.example.novsucompose.data
 
+import androidx.compose.ui.res.stringResource
 import org.jsoup.HttpStatusException
 import org.jsoup.nodes.Document
 import java.io.IOException
@@ -26,28 +27,19 @@ enum class ErrorCodes(val msg: String) {
     ResponseError("Ошибка запроса")
 }
 
-enum class Institute(val id: String, val label: String) {
-    IEIS("815132", "ИЭИС"),
-    ICEUS("868341", "ИЦЭУС"),
-    INPO("868342", "ИНПО"),
-    IBHI("868343", "ИБХИ"),
-    IGUM("868344", "ИГУМ"),
-    IMO("868345", "ИМО"),
-    IUR("1786977", "ИЮР"),
-    IPT("1798800", "ИПТ");
-
-    companion object {
-        fun find(label: String): Institute {
-            Institute.values().forEach {
-                if (it.label == label) return it
-            }
-            throw Exception("INVALID ID")
-        }
-    }
+enum class Institute(val id: String) {
+    IEIS("815132"),
+    ICEUS("868341"),
+    INPO("868342"),
+    IBHI("868343"),
+    IGUM("868344"),
+    IMO("868345"),
+    IUR("1786977"),
+    IPT("1798800");
 }
 
-data class Group(
-    val institute: Institute,
+data class Request(
+    val instituteId: String,
     var group: String,
     val subGroup: String
 )

@@ -16,8 +16,8 @@ val EMPTY_MODEL = MainModel(
     )
 )
 
-val DEFAULT_GROUP = Group(
-    institute = Institute.IBHI,
-    group = "2541",
+val DEFAULT_GROUP = Request(
+    instituteId = "815132",
+    group = "2092",
     subGroup = "2"
 )

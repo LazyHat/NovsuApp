@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
@@ -46,7 +47,7 @@ fun MainScreen() {
     val navController = rememberNavController()
     val scope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-    val navItems = listOf("Расписание", "Изменить группу", "Настройки")
+    val navItems = stringArrayResource(id = R.array.menu_items).toList()
     val selectedNavItem = remember { mutableStateOf(0) }
     val group = remember { mutableStateOf(DEFAULT_GROUP) }
 
@@ -68,7 +69,7 @@ fun MainScreen() {
                         content = { Icon(Icons.Default.Close, "icClose") }
                     )
                     Text(
-                        "Меню", style = TextStyle(fontSize = 20.sp)
+                        stringResource(id = R.string.menu), style = TextStyle(fontSize = 20.sp)
                     )
                 }
                 Spacer(Modifier.padding(10.dp))

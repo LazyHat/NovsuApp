@@ -5,12 +5,12 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import java.time.LocalTime
 
-fun getGroupsList(grade: String, institute: Institute): List<String> {
+fun getGroupsList(grade: String, institutelabel: String): List<String> {
     val url = "https://novsu.ru/university/timetable/ochn/?grade=$grade"
     val doc = Jsoup.connect(url).get()
     val listinst = doc.getElementsByClass("well grouplist")
     val listgroups = listinst.filter { element ->
-        element.getElementsByClass("institute")[0].text().trim() == institute.label
+        element.getElementsByClass("institute")[0].text().trim() == institutelabel
     }
     val groups = listgroups[0].getElementsByTag("a").map { element ->
         element.text().trim()
@@ -18,22 +18,22 @@ fun getGroupsList(grade: String, institute: Institute): List<String> {
     return groups
 }
 
-fun getData(group: Group, model: MutableState<MainModel>): ErrorCodes {
+fun getData(request: Request, model: MutableState<MainModel>): ErrorCodes {
     val groupname =
-        group.group.filter { it.isDigit() || it in 'A'..'Z' }
-    val grouptype = group.group.filter { !it.isDigit() && it !in 'A'..'Z' }
+        request.group.filter { it.isDigit() || it in 'A'..'Z' }
+    val grouptype = request.group.filter { !it.isDigit() && it !in 'A'..'Z' }
     val tTUrl = "https://portal.novsu.ru/univer/timetable/"
     val groupTTUrl = "https://www.novsu.ru/university/timetable/" +
             "ochn" +
-            "/i.1103357/?page=EditViewGroup&instId=${group.institute.id}&" +
+            "/i.1103357/?page=EditViewGroup&instId=${request.instituteId}&" +
             "name=${groupname}" +
             "&type=${grouptype.ifEmpty { "ДО" }}" +
             "&year=2022"
     return tryCatchIO {
         val result =
             Response(
-                group.group,
-                group.subGroup,
+                request.group,
+                request.subGroup,
                 Jsoup.connect(tTUrl).get(),
                 Jsoup.connect(groupTTUrl).get()
             )
@@ -52,11 +52,7 @@ private fun parseTimeFromData(element: Element): Time {
     return Time(
         LocalTime.parse(list.first()),
         LocalTime.parse(list.last().substring(0, 3) + "45"),
-        when (list.size) {
-            1 -> "1 Час"
-            in 2..4 -> "${list.size} Часа"
-            else -> "${list.size} Часов"
-        }
+        list.size.toString()
     )
 }
 

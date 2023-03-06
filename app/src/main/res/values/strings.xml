@@ -1,3 +1,74 @@
 <resources>
-    <string name="app_name">НовГУ Compose</string>
+    <string name="app_name">NovSU Compose</string>
+    <string name="menu">Menu</string>
+    <string name="loading">Loading</string>
+    <string-array name="menu_items">
+        <item>TimeTable</item>
+        <item>Edit group</item>
+        <item>Settings</item>
+    </string-array>
+    //TimeTable
+    ////Week
+    <string name="tt_week">Week</string>
+    <string name="tt_week_upper">Upper</string>
+    <string name="tt_week_lower">Lower</string>
+    <string name="tt_week_all">All</string>
+    ////
+    ////Days
+    <string-array name="tt_days">
+        <item>Mon</item>
+        <item>Tue</item>
+        <item>Wed</item>
+        <item>Thu</item>
+        <item>Fri</item>
+        <item>Sat</item>
+        <item>Sun</item>
+    </string-array>
+    ////
+    ////Card
+    <string name="tt_time_one_hour">Hour</string>
+    <string name="tt_time_few_hours">Hours</string>
+    <string name="tt_auditorium">Auditorium</string>
+    <string name="tt_eg_subgroup">SubGroup</string>
+    ////
+    //
+    //EditGroup
+    <string name="eg_institute">Institute</string>
+    <string name="eg_grade">Grade</string>
+    <string name="eg_group">Group</string>
+    <string name="eg_apply">Apply</string>
+    ////Institutes
+    <string-array name="eg_institutes">
+        <item>IEIS</item>
+        <item>ICEUS</item>
+        <item>INPO</item>
+        <item>IBHI</item>
+        <item>IGUM</item>
+        <item>IMO</item>
+        <item>IUR</item>
+        <item>IPT</item>
+    </string-array>
+    <string-array name="eg_institutes_label">
+        <item>ИЭИС</item>
+        <item>ИЦЕУС</item>
+        <item>ИНПО</item>
+        <item>ИБХИ</item>
+        <item>ИГУМ</item>
+        <item>ИМО</item>
+        <item>ИЮР</item>
+        <item>ИПТ</item>
+    </string-array>
+    <string-array name="eg_institutes_id">
+        <item>815132</item>
+        <item>868341</item>
+        <item>868342</item>
+        <item>868343</item>
+        <item>868344</item>
+        <item>868345</item>
+        <item>1786977</item>
+        <item>1798800</item>
+    </string-array>
+    ////
+    <string name="eg_not_entered">Not Entered</string>
+    //
 </resources>

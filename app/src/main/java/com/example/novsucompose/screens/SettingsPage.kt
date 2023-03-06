@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringArrayResource
+import com.example.novsucompose.R
 
 @Composable
 fun SettingsPage() {
@@ -12,6 +14,6 @@ fun SettingsPage() {
         modifier = Modifier
             .fillMaxSize()
     ) {
-        Text("Settings")
+        Text(stringArrayResource(id = R.array.menu_items)[3])
     }
 }
