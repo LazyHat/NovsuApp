@@ -1,6 +1,5 @@
 package com.example.novsucompose.data
 
-import androidx.compose.ui.res.stringResource
 import org.jsoup.HttpStatusException
 import org.jsoup.nodes.Document
 import java.io.IOException
@@ -25,17 +24,6 @@ enum class ErrorCodes(val msg: String) {
     IOError("Отсутствие сети"),
     TimeOutError("Время ожидания истекло"),
     ResponseError("Ошибка запроса")
-}
-
-enum class Institute(val id: String) {
-    IEIS("815132"),
-    ICEUS("868341"),
-    INPO("868342"),
-    IBHI("868343"),
-    IGUM("868344"),
-    IMO("868345"),
-    IUR("1786977"),
-    IPT("1798800");
 }
 
 data class Request(

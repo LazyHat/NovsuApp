@@ -11,7 +11,6 @@ import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.novsucompose.R
-import com.example.novsucompose.data.Institute
 import com.example.novsucompose.data.Request
 import com.example.novsucompose.data.getGroupsList
 import kotlinx.coroutines.Dispatchers
