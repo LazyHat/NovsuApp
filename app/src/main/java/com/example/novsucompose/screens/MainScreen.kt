@@ -12,16 +12,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.novsucompose.R
 import com.example.novsucompose.data.*
+import com.example.novsucompose.viewmodels.MainViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -43,13 +44,15 @@ fun TopBar(drawerState: DrawerState, scope: CoroutineScope) {
 }
 
 @Composable
-fun MainScreen() {
+fun MainScreen(
+    model: MainViewModel = MainViewModel()
+) {
     val navController = rememberNavController()
     val scope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-    val navItems = stringArrayResource(id = R.array.menu_items).toList()
     val selectedNavItem = remember { mutableStateOf(0) }
-    val group = remember { mutableStateOf(DEFAULT_GROUP) }
+
+    val uiState by model.uiState.collectAsState()
 
     ModalNavigationDrawer(
         drawerContent = {
@@ -73,9 +76,9 @@ fun MainScreen() {
                     )
                 }
                 Spacer(Modifier.padding(10.dp))
-                navItems.forEachIndexed() { index, item ->
+                Pages.values().forEachIndexed() { index, item ->
                     NavigationDrawerItem(
-                        label = { Text(item) },
+                        label = { Text(stringResource(id = item.labelRes)) },
                         selected = index == selectedNavItem.value,
                         modifier = Modifier.padding(
                             NavigationDrawerItemDefaults.ItemPadding
@@ -97,11 +100,11 @@ fun MainScreen() {
             )
             NavHost(
                 navController = navController,
-                startDestination = navItems[selectedNavItem.value]
+                startDestination = Pages.values()[selectedNavItem.value].name
             ) {
-                composable(navItems[0]) { TimeTablePage(group.value) }
-                composable(navItems[1]) { EditGroupPage(group, selectedNavItem) }
-                composable(navItems[2]) { SettingsPage() }
+                composable(Pages.TimeTable.name) { TimeTablePage(/*group.value*/) }
+                composable(Pages.EditGroup.name) { EditGroupPage(/*group, selectedNavItem*/) }
+                composable(Pages.Settings.name) { SettingsPage() }
             }
         }
     }

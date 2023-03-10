@@ -11,10 +11,12 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -22,80 +24,85 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.novsucompose.R
 import com.example.novsucompose.data.*
+import com.example.novsucompose.viewmodels.TimeTableViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun TimeTablePage(request: Request) {
-    val pagerState = rememberPagerState()
-    var fabState by remember { mutableStateOf(Week.All) }
+fun TimeTablePage(model: MainModel) {
+    val viewModel = TimeTableViewModel(model)
     val scope = rememberCoroutineScope()
-    val mainModel = remember { mutableStateOf(EMPTY_MODEL) }
-    var error by remember { mutableStateOf(ErrorCodes.OK) }
-    LaunchedEffect(key1 = request, block = {
-        scope.launch(Dispatchers.IO) {
-            error = getData(request, mainModel)
-        }
-    })
-    Scaffold(bottomBar = { TabsBar(pagerState = pagerState, model = mainModel) },
+    val pagerState = rememberPagerState()
+    val uiState by viewModel.uiState.collectAsState()
+
+    Scaffold(bottomBar = {
+        TabsBar(
+            currentIndex = pagerState.currentPage,
+            countOfDays = uiState.mainModel.days.size,
+            updateTab = {
+                scope.launch {
+                    pagerState.animateScrollToPage(it)
+                }
+            }
+        )
+    },
         floatingActionButton = {
-            WeekGroupFab(state = fabState) { updatedWeek ->
-                fabState = updatedWeek
+            WeekGroupFab(currentWeek = uiState.sort) { updatedWeek ->
+                viewModel.updateSort(updatedWeek)
             }
         }) { padding ->
         Box(modifier = Modifier.padding(padding)) {
             HorizontalPager(
-                pageCount = if (error != ErrorCodes.OK) 1 else mainModel.value.days.size,
+                pageCount = uiState.mainModel.days.size,
                 state = pagerState,
                 modifier = Modifier
                     .fillMaxHeight(0.94F)
                     .fillMaxWidth()
             ) { page ->
-                if (mainModel.value.group != "" && error == ErrorCodes.OK) LazyColumn(
+                LazyColumn(
                     modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(5.dp)
                 ) {
-                    items(mainModel.value.days[page].lessons.filter { lessonModel ->
-                        fabState == Week.All || lessonModel.week == Week.All || lessonModel.week == fabState
-                    }) {
+                    items(viewModel.getLessons(page)) {
                         LessonCard(model = it)
                     }
                 }
                 else if (error != ErrorCodes.OK) {
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        Text(
-                            text = "Error. msg: ${error.msg}",
-                            style = TextStyle(fontSize = 20.sp)
-                        )
-                    }
-                } else if (mainModel.value.group == "") {
-                    var loadingS by remember { mutableStateOf("") }
-                    Box(
-                        modifier = Modifier.fillMaxSize(), contentAlignment = Center
-                    ) {
-                        Text(
-                            text = "${stringResource(id = R.string.loading)}$loadingS",
-                            style = TextStyle(fontSize = 20.sp)
-                        )
-                    }
-                    LaunchedEffect(key1 = loadingS, block = {
-                        if (loadingS == "....") loadingS = ""
-                        delay(300L)
-                        loadingS += "."
-                    })
+                Box(modifier = Modifier.fillMaxSize()) {
+                    Text(
+                        text = "Error. msg: ${error.msg}",
+                        style = TextStyle(fontSize = 20.sp)
+                    )
                 }
+            } else if (mainModel.value.group == "") {
+                var loadingS by remember { mutableStateOf("") }
+                Box(
+                    modifier = Modifier.fillMaxSize(), contentAlignment = Center
+                ) {
+                    Text(
+                        text = "${stringResource(id = R.string.loading)}$loadingS",
+                        style = TextStyle(fontSize = 20.sp)
+                    )
+                }
+                LaunchedEffect(key1 = loadingS, block = {
+                    if (loadingS == "....") loadingS = ""
+                    delay(300L)
+                    loadingS += "."
+                })
+            }
             }
         }
     }
 }
 
 @Composable
-fun WeekGroupFab(state: Week, update: (updatedWeek: Week) -> Unit) {
+fun WeekGroupFab(currentWeek: Week, update: (updatedWeek: Week) -> Unit) {
     FloatingActionButton(
         onClick = {
             update(
-                when (state) {
+                when (currentWeek) {
                     Week.All -> Week.Upper
                     Week.Upper -> Week.Lower
                     Week.Lower -> Week.All
@@ -104,7 +111,7 @@ fun WeekGroupFab(state: Week, update: (updatedWeek: Week) -> Unit) {
         }, shape = RoundedCornerShape(20.dp)
     ) {
         Text(
-            when (val s = state.label) {
+            when (val s = stringResource(id = currentWeek.labelRes)) {
                 "" -> stringResource(id = R.string.tt_week_all)
                 else -> s
             }
@@ -112,23 +119,20 @@ fun WeekGroupFab(state: Week, update: (updatedWeek: Week) -> Unit) {
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun TabsBar(pagerState: PagerState, model: MutableState<MainModel>) {
-    val scope = rememberCoroutineScope()
+fun TabsBar(currentIndex: Int, countOfDays: Int, updateTab: (updatedIndex: Int) -> Unit) {
     TabRow(
-        selectedTabIndex = pagerState.currentPage,
+        selectedTabIndex = currentIndex,
         containerColor = Color.Transparent,
         contentColor = Color.White,
     ) {
-        model.value.days.forEachIndexed { index, tmodel ->
+        val tabItems = stringArrayResource(id = R.array.tt_days)
+        for (it in 0..countOfDays) {
             Tab(modifier = Modifier.padding(10.dp),
-                selected = index == pagerState.currentPage,
-                content = { Text(tmodel.dayName) },
+                selected = it == currentIndex,
+                content = { Text(tabItems[it]) },
                 onClick = {
-                    scope.launch {
-                        pagerState.animateScrollToPage(index)
-                    }
+                    updateTab(it)
                 })
         }
     }

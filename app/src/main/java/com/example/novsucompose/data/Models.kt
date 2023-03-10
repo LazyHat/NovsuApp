@@ -1,49 +1,33 @@
 package com.example.novsucompose.data
 
-import org.jsoup.HttpStatusException
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.pager.PagerState
 import org.jsoup.nodes.Document
-import java.io.IOException
-import java.net.SocketTimeoutException
 import java.time.LocalTime
 
-fun tryCatchIO(content: () -> Unit): ErrorCodes {
-    try {
-        content()
-    } catch (e: IOException) {
-        return ErrorCodes.IOError
-    } catch (e: HttpStatusException) {
-        return ErrorCodes.ResponseError
-    } catch (e: SocketTimeoutException) {
-        return ErrorCodes.TimeOutError
-    }
-    return ErrorCodes.OK
-}
-
-enum class ErrorCodes(val msg: String) {
-    OK(""),
-    IOError("Отсутствие сети"),
-    TimeOutError("Время ожидания истекло"),
-    ResponseError("Ошибка запроса")
-}
-
-data class Request(
-    val instituteId: String,
-    var group: String,
-    val subGroup: String
+data class GroupSpecs(
+    val institute: Institute = Institute.IEIS,
+    val grade: String = "1",
+    val group: String = "2092",
+    val subGroup: String = "2",
+    val groupList: List<String> = listOf(),
 )
 
 data class Response(
-    val group: String,
-    val subGroup: String,
-    val mainDoc: Document,
-    val groupDoc: Document
+    val ttDoc: Document = Document(""),
+    val mainDoc: Document = Document("")
+)
+
+data class TTModel(
+    val mainModel: MainModel,
+    val sort: Week
 )
 
 data class MainModel(
-    val group: String,
-    val subGroup: String,
-    val week: Week,
-    val days: List<DayModel>
+    val groupSpecs: GroupSpecs = GroupSpecs(),
+    val week: Week = Week.Upper,
+    val error: String? = null,
+    val days: List<DayModel> = listOf()
 )
 
 data class DayModel(
@@ -66,14 +50,4 @@ data class Time(
     val start: LocalTime,
     val end: LocalTime,
     val hours: Int
-) {
-    fun getString(): String {
-        return "${start}-${end} $hours"
-    }
-}
-
-enum class Week(val label: String) {
-    Upper("Верхняя"),
-    Lower("Нижняя"),
-    All("")
-}
+)

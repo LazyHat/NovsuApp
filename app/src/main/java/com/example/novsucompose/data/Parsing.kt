@@ -1,8 +1,12 @@
 package com.example.novsucompose.data
 
-import androidx.compose.runtime.MutableState
+import org.jsoup.HttpStatusException
 import org.jsoup.Jsoup
+import org.jsoup.UnsupportedMimeTypeException
 import org.jsoup.nodes.Element
+import java.io.IOException
+import java.net.MalformedURLException
+import java.net.SocketTimeoutException
 import java.time.LocalTime
 
 fun getGroupsList(grade: String, institutelabel: String): List<String> {
@@ -18,28 +22,37 @@ fun getGroupsList(grade: String, institutelabel: String): List<String> {
     return groups
 }
 
-fun getData(request: Request, model: MutableState<MainModel>): ErrorCodes {
+fun getData(model: MainModel): MainModel {
     val groupname =
-        request.group.filter { it.isDigit() || it in 'A'..'Z' }
-    val grouptype = request.group.filter { !it.isDigit() && it !in 'A'..'Z' }
-    val tTUrl = "https://portal.novsu.ru/univer/timetable/"
+        model.groupSpecs.group.filter { it.isDigit() || it in 'A'..'Z' }
+    val grouptype = model.groupSpecs.group.filter { !it.isDigit() && it !in 'A'..'Z' }
+    val ttUrl = "https://portal.novsu.ru/univer/timetable/"
     val groupTTUrl = "https://www.novsu.ru/university/timetable/" +
             "ochn" +
-            "/i.1103357/?page=EditViewGroup&instId=${request.instituteId}&" +
+            "/i.1103357/?page=EditViewGroup&instId=${model.groupSpecs.institute.id}&" +
             "name=${groupname}" +
             "&type=${grouptype.ifEmpty { "ДО" }}" +
             "&year=2022"
-    return tryCatchIO {
-        val result =
-            Response(
-                request.group,
-                request.subGroup,
-                Jsoup.connect(tTUrl).get(),
-                Jsoup.connect(groupTTUrl).get()
-            )
-        model.value = getModelFromData(result)
+    var response = Response()
+    try {
+        response = response.copy(
+            ttDoc = Jsoup.connect(ttUrl).get(),
+            mainDoc = Jsoup.connect(groupTTUrl).get()
+        )
+    } catch (e: MalformedURLException) {
+        return model.copy(error = "MalformedURLException")
+    } catch (e: HttpStatusException) {
+        return model.copy(error = "HttpStatusException")
+    } catch (e: UnsupportedMimeTypeException) {
+        return model.copy(error = "UnsupportedMimeTypeException")
+    } catch (e: SocketTimeoutException) {
+        return model.copy(error = "SocketTimeoutException")
+    } catch (e: IOException) {
+        return model.copy(error = "IOException")
     }
+    return getModelFromData(model, response)
 }
+
 
 private fun parseTimeFromData(element: Element): Time {
     val time = element.childNodes().last().toString().trim()
@@ -100,7 +113,7 @@ private fun getCommentFromData(element: Element): String {
 }
 
 private fun getDaysFromData(response: Response): List<DayModel> {
-    return response.groupDoc.getElementsByClass("page-content")[0]
+    return response.mainDoc.getElementsByClass("page-content")[0]
         .getElementsByClass("well day-block").map { dayElement ->
             DayModel(
                 dayElement.getElementsByClass("dow")[0].text().trim(),
@@ -129,20 +142,17 @@ private fun getDaysFromData(response: Response): List<DayModel> {
                             lessonElement.getElementsByClass("comment").first()!!
                         )
                     )
-                }
-                    .filter { response.subGroup == "" || it.subGroup == "" || it.subGroup == response.subGroup })
+                })
         }
 }
 
-private fun getModelFromData(response: Response): MainModel {
-    return MainModel(
-        response.group,
-        response.subGroup,
-        getWeekFromData(
+private fun getModelFromData(model: MainModel, response: Response): MainModel {
+    return model.copy(
+        week = getWeekFromData(
             response.mainDoc.getElementById("npe_instance_1103492_npe_content")!!
                 .getElementsByClass("block_3padding")[0]
                 .getElementsByTag("b")[0]
         ),
-        getDaysFromData(response)
+        days = getDaysFromData(response)
     )
 }
