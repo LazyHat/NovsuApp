@@ -1,4 +1,4 @@
-package com.example.novsucompose
+package com.lazyhat.novsuapp
 
 import org.junit.Test
 

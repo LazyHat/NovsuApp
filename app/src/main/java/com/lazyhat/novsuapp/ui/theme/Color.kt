@@ -1,4 +1,4 @@
-package com.example.novsucompose.ui.theme
+package com.lazyhat.novsuapp.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

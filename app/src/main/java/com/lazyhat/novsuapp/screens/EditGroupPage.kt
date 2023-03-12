@@ -1,4 +1,4 @@
-package com.example.novsucompose.screens
+package com.lazyhat.novsuapp.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -8,16 +8,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.novsucompose.R
-import com.example.novsucompose.data.DataSource
-import com.example.novsucompose.data.GroupSpecs
-import com.example.novsucompose.data.Institute
-import com.example.novsucompose.viewmodels.EditGroupViewModel
+import com.lazyhat.novsuapp.R
+import com.lazyhat.novsuapp.data.*
+import com.lazyhat.novsuapp.viewmodels.EditGroupViewModel
 
 
 @Composable
-fun EditGroupPage(groupSpecs: GroupSpecs, onResult: (GroupSpecs) -> Unit) {
-    val viewModel = EditGroupViewModel(groupSpecs)
+fun EditGroupPage(
+    groupSpecs: GroupSpecs,
+    viewModel: EditGroupViewModel = EditGroupViewModel(groupSpecs),
+    onResult: (GroupSpecs) -> Unit
+) {
     val uiState by viewModel.uiState.collectAsState()
     var buttonEnabled by remember { mutableStateOf(false) }
 
@@ -30,7 +31,7 @@ fun EditGroupPage(groupSpecs: GroupSpecs, onResult: (GroupSpecs) -> Unit) {
                     .padding(top = 10.dp, bottom = 10.dp),
                 content = { Text(stringResource(id = R.string.eg_apply)) },
                 onClick = {
-                    onResult(uiState.copy(groupList = listOf()))
+                    onResult(uiState.groupSpecs)
                 })
             LazyColumn(
                 modifier = Modifier
@@ -41,25 +42,29 @@ fun EditGroupPage(groupSpecs: GroupSpecs, onResult: (GroupSpecs) -> Unit) {
                 item {
                     ListTextBox(
                         Institute.values().toList().map { stringResource(id = it.labelRes) },
-                        stringResource(id = uiState.institute.labelRes),
+                        stringResource(id = uiState.groupSpecs.institute.labelRes),
                         stringResource(id = R.string.eg_institute),
                     ) { _, index ->
-                        viewModel.updateInstituteAndGrade(Institute.values()[index])
+                        viewModel.updateInstituteAndGrade(
+                            newInstitute = Institute.values()[index]
+                        )
                     }
                 }
                 item {
                     ListTextBox(
                         DataSource.gradesList,
-                        uiState.grade,
+                        uiState.groupSpecs.grade,
                         stringResource(id = R.string.eg_grade),
                     ) { updatedItem, _ ->
-                        viewModel.updateInstituteAndGrade(newGrade = updatedItem)
+                        viewModel.updateInstituteAndGrade(
+                            newGrade = updatedItem
+                        )
                     }
                 }
                 item {
                     ListTextBox(
-                        items = uiState.groupList,
-                        selectedItem = uiState.group,
+                        items = uiState.groupsList,
+                        selectedItem = uiState.groupSpecs.group,
                         label = stringResource(id = R.string.eg_group)
                     ) { updatedItem, _ ->
                         viewModel.updateGroup(updatedItem)
@@ -69,7 +74,7 @@ fun EditGroupPage(groupSpecs: GroupSpecs, onResult: (GroupSpecs) -> Unit) {
                 item {
                     ListTextBox(
                         items = DataSource.subGroupsList,
-                        selectedItem = uiState.subGroup,
+                        selectedItem = uiState.groupSpecs.subGroup,
                         label = stringResource(id = R.string.tt_eg_subgroup)
                     ) { updatedItem, _ ->
                         viewModel.updateSubGroup(updatedItem)

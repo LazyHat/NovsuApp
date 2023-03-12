@@ -1,10 +1,10 @@
-package com.example.novsucompose.data
+package com.lazyhat.novsuapp.data
 
-import com.example.novsucompose.R
+import com.lazyhat.novsuapp.R
 
 enum class Institute(val id: String, val labelRes: Int, val labelRus: String) {
     IEIS(id = "815132", R.string.inst_IEIS, "ИЭИС"),
-    ICEUS(id = "868341", R.string.inst_ICEUS, "ИЦЕУС"),
+    ICEUS(id = "868341", R.string.inst_ICEUS, "ИЦЭУС"),
     INPO(id = "868342", R.string.inst_INPO, "ИНПО"),
     IBHI(id = "868343", R.string.inst_IBHI, "ИБХИ"),
     IGUM(id = "868344", R.string.inst_IGUM, "ИГУМ"),
@@ -15,8 +15,7 @@ enum class Institute(val id: String, val labelRes: Int, val labelRus: String) {
 
 enum class Week(val labelRes: Int) {
     Upper(R.string.tt_week_upper),
-    Lower(R.string.tt_week_lower),
-    All(0)
+    Lower(R.string.tt_week_lower)
 }
 
 enum class Pages(val labelRes: Int) {

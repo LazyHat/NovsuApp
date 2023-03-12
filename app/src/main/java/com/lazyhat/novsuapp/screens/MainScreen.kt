@@ -1,4 +1,4 @@
-package com.example.novsucompose.screens
+package com.lazyhat.novsuapp.screens
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -16,13 +16,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.novsucompose.R
-import com.example.novsucompose.data.*
-import com.example.novsucompose.viewmodels.MainViewModel
+import com.lazyhat.novsuapp.R
+import com.lazyhat.novsuapp.data.*
+import com.lazyhat.novsuapp.viewmodels.MainViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -45,14 +44,13 @@ fun TopBar(drawerState: DrawerState, scope: CoroutineScope) {
 
 @Composable
 fun MainScreen(
-    model: MainViewModel = MainViewModel()
+    viewModel: MainViewModel = MainViewModel()
 ) {
     val navController = rememberNavController()
     val scope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-    val selectedNavItem = remember { mutableStateOf(0) }
 
-    val uiState by model.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
 
     ModalNavigationDrawer(
         drawerContent = {
@@ -76,16 +74,17 @@ fun MainScreen(
                     )
                 }
                 Spacer(Modifier.padding(10.dp))
-                Pages.values().forEachIndexed() { index, item ->
+                Pages.values().forEachIndexed { index, item ->
                     NavigationDrawerItem(
                         label = { Text(stringResource(id = item.labelRes)) },
-                        selected = index == selectedNavItem.value,
+                        selected = item == (navController.currentBackStackEntry?.destination?.route
+                            ?: Pages.TimeTable),
                         modifier = Modifier.padding(
                             NavigationDrawerItemDefaults.ItemPadding
                         ),
                         onClick = {
                             scope.launch { drawerState.close() }
-                            selectedNavItem.value = index
+                            navController.navigate(Pages.values()[index].name)
                         },
                     )
                 }
@@ -100,10 +99,14 @@ fun MainScreen(
             )
             NavHost(
                 navController = navController,
-                startDestination = Pages.values()[selectedNavItem.value].name
+                startDestination = Pages.TimeTable.name
             ) {
-                composable(Pages.TimeTable.name) { TimeTablePage(/*group.value*/) }
-                composable(Pages.EditGroup.name) { EditGroupPage(/*group, selectedNavItem*/) }
+                composable(Pages.TimeTable.name) { TimeTablePage(uiState.groupSpecs) }
+                composable(Pages.EditGroup.name) {
+                    EditGroupPage(uiState.groupSpecs) {
+                        viewModel.updateGroupSpecs(it)
+                    }
+                }
                 composable(Pages.Settings.name) { SettingsPage() }
             }
         }

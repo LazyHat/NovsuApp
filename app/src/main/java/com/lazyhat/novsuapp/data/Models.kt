@@ -1,7 +1,5 @@
-package com.example.novsucompose.data
+package com.lazyhat.novsuapp.data
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.pager.PagerState
 import org.jsoup.nodes.Document
 import java.time.LocalTime
 
@@ -9,8 +7,12 @@ data class GroupSpecs(
     val institute: Institute = Institute.IEIS,
     val grade: String = "1",
     val group: String = "2092",
-    val subGroup: String = "2",
-    val groupList: List<String> = listOf(),
+    val subGroup: String = "2"
+)
+
+data class EditGroupModel(
+    val groupSpecs: GroupSpecs = GroupSpecs(),
+    val groupsList: List<String> = listOf()
 )
 
 data class Response(
@@ -18,14 +20,18 @@ data class Response(
     val mainDoc: Document = Document("")
 )
 
-data class TTModel(
-    val mainModel: MainModel,
-    val sort: Week
+data class MainModel(
+    val groupSpecs: GroupSpecs = GroupSpecs()
 )
 
-data class MainModel(
+data class TTModel(
+    val weekModel: WeekModel = WeekModel(),
+    val sort: Week?
+)
+
+data class WeekModel(
     val groupSpecs: GroupSpecs = GroupSpecs(),
-    val week: Week = Week.Upper,
+    val week: Week? = null,
     val error: String? = null,
     val days: List<DayModel> = listOf()
 )
@@ -42,7 +48,7 @@ data class LessonModel(
     val subGroup: String,
     val auditorium: String,
     val teacher: String,
-    val week: Week,
+    val week: Week?,
     val description: String,
 )
 
@@ -50,4 +56,6 @@ data class Time(
     val start: LocalTime,
     val end: LocalTime,
     val hours: Int
-)
+) {
+    fun getString() = "${this.start} - ${this.end}, ${this.hours}"
+}

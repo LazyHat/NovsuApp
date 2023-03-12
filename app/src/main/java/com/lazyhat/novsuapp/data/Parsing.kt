@@ -1,4 +1,4 @@
-package com.example.novsucompose.data
+package com.lazyhat.novsuapp.data
 
 import org.jsoup.HttpStatusException
 import org.jsoup.Jsoup
@@ -22,14 +22,14 @@ fun getGroupsList(grade: String, institutelabel: String): List<String> {
     return groups
 }
 
-fun getData(model: MainModel): MainModel {
+fun getData(groupSpecs: GroupSpecs): WeekModel {
     val groupname =
-        model.groupSpecs.group.filter { it.isDigit() || it in 'A'..'Z' }
-    val grouptype = model.groupSpecs.group.filter { !it.isDigit() && it !in 'A'..'Z' }
+        groupSpecs.group.filter { it.isDigit() || it in 'A'..'Z' }
+    val grouptype = groupSpecs.group.filter { !it.isDigit() && it !in 'A'..'Z' }
     val ttUrl = "https://portal.novsu.ru/univer/timetable/"
     val groupTTUrl = "https://www.novsu.ru/university/timetable/" +
             "ochn" +
-            "/i.1103357/?page=EditViewGroup&instId=${model.groupSpecs.institute.id}&" +
+            "/i.1103357/?page=EditViewGroup&instId=${groupSpecs.institute.id}&" +
             "name=${groupname}" +
             "&type=${grouptype.ifEmpty { "ДО" }}" +
             "&year=2022"
@@ -40,17 +40,17 @@ fun getData(model: MainModel): MainModel {
             mainDoc = Jsoup.connect(groupTTUrl).get()
         )
     } catch (e: MalformedURLException) {
-        return model.copy(error = "MalformedURLException")
+        return WeekModel(error = "MalformedURLException")
     } catch (e: HttpStatusException) {
-        return model.copy(error = "HttpStatusException")
+        return WeekModel(error = "HttpStatusException")
     } catch (e: UnsupportedMimeTypeException) {
-        return model.copy(error = "UnsupportedMimeTypeException")
+        return WeekModel(error = "UnsupportedMimeTypeException")
     } catch (e: SocketTimeoutException) {
-        return model.copy(error = "SocketTimeoutException")
+        return WeekModel(error = "SocketTimeoutException")
     } catch (e: IOException) {
-        return model.copy(error = "IOException")
+        return WeekModel(error = "IOException")
     }
-    return getModelFromData(model, response)
+    return getModelFromData(response)
 }
 
 
@@ -88,13 +88,13 @@ private fun getLessonTypeFromData(element: Element): String {
     }
 }
 
-private fun getWeekFromData(element: Element): Week {
+private fun getWeekFromData(element: Element): Week? {
     val text = element.text().lowercase()
     with(text) {
         return when {
             contains("верх") -> Week.Upper
             contains("нижн") -> Week.Lower
-            else -> Week.All
+            else -> null
         }
     }
 }
@@ -146,10 +146,10 @@ private fun getDaysFromData(response: Response): List<DayModel> {
         }
 }
 
-private fun getModelFromData(model: MainModel, response: Response): MainModel {
-    return model.copy(
+private fun getModelFromData(response: Response): WeekModel {
+    return WeekModel(
         week = getWeekFromData(
-            response.mainDoc.getElementById("npe_instance_1103492_npe_content")!!
+            response.ttDoc.getElementById("npe_instance_1103492_npe_content")!!
                 .getElementsByClass("block_3padding")[0]
                 .getElementsByTag("b")[0]
         ),

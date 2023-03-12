@@ -1,4 +1,4 @@
-package com.example.novsucompose.screens
+package com.lazyhat.novsuapp.screens
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -6,114 +6,94 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.novsucompose.R
-import com.example.novsucompose.data.*
-import com.example.novsucompose.viewmodels.TimeTableViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
+import com.lazyhat.novsuapp.R
+import com.lazyhat.novsuapp.data.*
+import com.lazyhat.novsuapp.viewmodels.TimeTableViewModel
 import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun TimeTablePage(model: MainModel) {
-    val viewModel = TimeTableViewModel(model)
+fun TimeTablePage(
+    groupSpecs: GroupSpecs,
+    viewModel: TimeTableViewModel = TimeTableViewModel(groupSpecs)
+) {
     val scope = rememberCoroutineScope()
     val pagerState = rememberPagerState()
     val uiState by viewModel.uiState.collectAsState()
 
     Scaffold(bottomBar = {
-        TabsBar(
-            currentIndex = pagerState.currentPage,
-            countOfDays = uiState.mainModel.days.size,
-            updateTab = {
-                scope.launch {
-                    pagerState.animateScrollToPage(it)
-                }
-            }
-        )
-    },
-        floatingActionButton = {
-            WeekGroupFab(currentWeek = uiState.sort) { updatedWeek ->
-                viewModel.updateSort(updatedWeek)
-            }
-        }) { padding ->
-        Box(modifier = Modifier.padding(padding)) {
-            HorizontalPager(
-                pageCount = uiState.mainModel.days.size,
-                state = pagerState,
-                modifier = Modifier
-                    .fillMaxHeight(0.94F)
-                    .fillMaxWidth()
-            ) { page ->
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(5.dp)
-                ) {
-                    items(viewModel.getLessons(page)) {
-                        LessonCard(model = it)
+        if (uiState.weekModel.days.isNotEmpty())
+            TabsBar(
+                currentIndex = pagerState.currentPage,
+                countOfDays = uiState.weekModel.days.size,
+                updateTab = {
+                    scope.launch {
+                        pagerState.animateScrollToPage(it)
                     }
                 }
-                else if (error != ErrorCodes.OK) {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    Text(
-                        text = "Error. msg: ${error.msg}",
-                        style = TextStyle(fontSize = 20.sp)
-                    )
+            )
+    },
+        floatingActionButton = {
+            if (uiState.weekModel.days.isNotEmpty())
+                WeekGroupFab(currentWeek = uiState.sort) { updatedWeek ->
+                    viewModel.updateSort(updatedWeek)
                 }
-            } else if (mainModel.value.group == "") {
-                var loadingS by remember { mutableStateOf("") }
-                Box(
-                    modifier = Modifier.fillMaxSize(), contentAlignment = Center
-                ) {
-                    Text(
-                        text = "${stringResource(id = R.string.loading)}$loadingS",
-                        style = TextStyle(fontSize = 20.sp)
-                    )
+        }) { padding ->
+        Box(modifier = Modifier.padding(padding)) {
+            if (uiState.weekModel.days.isEmpty()) {
+                LoadingPage()
+            } else
+                HorizontalPager(
+                    pageCount = uiState.weekModel.days.size,
+                    state = pagerState,
+                    modifier = Modifier
+                        .fillMaxHeight(0.94F)
+                        .fillMaxWidth()
+                ) { page ->
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(5.dp)
+                    ) {
+                        with(uiState.weekModel.days[page].lessons) {
+                            if (this.isNotEmpty())
+                                items(this) {
+                                    LessonCard(model = it)
+                                }
+                        }
+                    }
                 }
-                LaunchedEffect(key1 = loadingS, block = {
-                    if (loadingS == "....") loadingS = ""
-                    delay(300L)
-                    loadingS += "."
-                })
-            }
-            }
         }
     }
 }
 
 @Composable
-fun WeekGroupFab(currentWeek: Week, update: (updatedWeek: Week) -> Unit) {
+fun WeekGroupFab(currentWeek: Week?, update: (updatedWeek: Week?) -> Unit) {
     FloatingActionButton(
         onClick = {
             update(
                 when (currentWeek) {
-                    Week.All -> Week.Upper
+                    null -> Week.Upper
                     Week.Upper -> Week.Lower
-                    Week.Lower -> Week.All
+                    Week.Lower -> null
                 }
             )
         }, shape = RoundedCornerShape(20.dp)
     ) {
         Text(
-            when (val s = stringResource(id = currentWeek.labelRes)) {
-                "" -> stringResource(id = R.string.tt_week_all)
-                else -> s
+            when (val id = currentWeek?.labelRes) {
+                null -> stringResource(id = R.string.tt_week_all)
+                else -> stringResource(id = id)
             }
         )
     }
@@ -127,7 +107,7 @@ fun TabsBar(currentIndex: Int, countOfDays: Int, updateTab: (updatedIndex: Int) 
         contentColor = Color.White,
     ) {
         val tabItems = stringArrayResource(id = R.array.tt_days)
-        for (it in 0..countOfDays) {
+        for (it in 0 until countOfDays) {
             Tab(modifier = Modifier.padding(10.dp),
                 selected = it == currentIndex,
                 content = { Text(tabItems[it]) },
@@ -177,11 +157,12 @@ fun LessonCard(model: LessonModel) {
                 iconResId = R.drawable.ic_auditorium,
                 stringResource(R.string.tt_auditorium)
             )
-            CardStroke(
-                text = model.week.label,
-                iconResId = R.drawable.ic_week,
-                stringResource(id = R.string.tt_week)
-            )
+            if (model.week != null)
+                CardStroke(
+                    text = stringResource(id = model.week.labelRes),
+                    iconResId = R.drawable.ic_week,
+                    stringResource(id = R.string.tt_week)
+                )
             CardStroke(text = model.description, iconResId = R.drawable.ic_description)
         }
     }

@@ -1,12 +1,12 @@
-package com.example.novsucompose
+package com.lazyhat.novsuapp
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.novsucompose.screens.MainScreen
-import com.example.novsucompose.ui.theme.NovsuTheme
+import com.lazyhat.novsuapp.screens.MainScreen
+import com.lazyhat.novsuapp.ui.theme.NovsuTheme
 
 
 class MainActivity : ComponentActivity() {
