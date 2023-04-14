@@ -12,8 +12,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.lazyhat.novsuapp.R
 import com.lazyhat.novsuapp.data.*
 import com.lazyhat.novsuapp.screens.timetable.EmptyDay
 import com.lazyhat.novsuapp.screens.timetable.EmptyWeek
@@ -44,7 +46,7 @@ fun TTPage(
 
 
     Scaffold(
-        topBar = { TopBar(openDrawer) },
+        topBar = { TopBar(openDrawer, label = stringResource(id = R.string.timetable_label)) },
         bottomBar = {
             if (uiState.isNormal())
                 TabsBar(
@@ -128,7 +130,7 @@ fun CardsPreview() {
     for (i in 0..3) {
         list.add(lesson)
     }
-    NovsuTheme(DataSource.ColorSchemes.Default.scheme) {
+    NovsuTheme(DataSource.ColorSchemes.Pink.scheme) {
         DayColumnCards(lessons = list)
     }
 }

@@ -1,10 +1,8 @@
 package com.lazyhat.novsuapp.screens.timetable.cardsview
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -72,12 +70,9 @@ fun LessonCard(model: LessonModel) {
                         )
                     }",
                     modifier = Modifier
-                        .padding(bottom = 5.dp)
-                        .background(
-                            color = MaterialTheme.colorScheme.primary,
-                            shape = RoundedCornerShape(5.dp)
-                        )
-                        .padding(start = 1.dp, end = 1.dp)
+                        .padding(bottom = 5.dp),
+                    style = TextStyle(fontSize = 18.sp),
+                    color = MaterialTheme.colorScheme.secondary
                 )
             CardStroke(
                 text = model.auditorium,

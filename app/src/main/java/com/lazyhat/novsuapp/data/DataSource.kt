@@ -16,12 +16,16 @@ object DataSource {
         ),
         Pink(
             DEFAULT_COLORS.copy(
-                primary = Pink70,
-                secondary = Pink70,
-                secondaryContainer = Pink70,
-                outline = Pink70,
-                onTertiary = Pink70,
-                scrim = Pink50
+                primary = Pink60,
+                secondary = Pink75,
+                secondaryContainer = Pink65,
+                outline = Pink75,
+                onTertiary = Pink75,
+                scrim = Pink20,
+                surfaceVariant = Pink75,
+                background = Color.Black,
+                surface = Color.Black,
+                onSurface = Color.Black,
             ),
             R.string.pink_theme
         ),
@@ -35,7 +39,8 @@ object DataSource {
                 secondaryContainer = Gray20,
                 onTertiary = Color.White,
                 outline = Gray20,
-                scrim = Color.Black
+                scrim = Color.Black,
+                surfaceVariant = Gray60
             ),
             R.string.black_theme
         )
@@ -61,7 +66,7 @@ private val DEFAULT_COLORS = ColorScheme(
     tertiaryContainer = Color.Red,
     onTertiaryContainer = Color.Red,
     onSurfaceVariant = Color.Red,
-    surfaceVariant = Color.Red,
+    surfaceVariant = Blue80, //Annotations
     outline = Blue70,
     outlineVariant = Gray10,
     inverseSurface = Color.Red,

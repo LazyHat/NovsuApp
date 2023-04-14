@@ -26,6 +26,8 @@ import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import ru.rustore.sdk.appupdate.manager.RuStoreAppUpdateManager
+import ru.rustore.sdk.appupdate.manager.factory.RuStoreAppUpdateManagerFactory
 import java.time.Duration
 import javax.inject.Singleton
 
@@ -46,7 +48,8 @@ object RepositoryModule {
         gsDataStore: DataStore<GroupSpecs>,
         sDataStore: DataStore<Settings>,
         glDataStore: DataStore<GroupList>,
-        tdDataStore: DataStore<TimeData>
+        tdDataStore: DataStore<TimeData>,
+        updateManager: RuStoreAppUpdateManager
     ): MainRepository {
         return DefaultRepository(
             mainDao,
@@ -65,7 +68,8 @@ object RepositoryModule {
             ),
             PeriodicWorkRequestBuilder<GetTimeWorkerPeriodic>(Duration.ofMinutes(30)).setConstraints(
                 networkConstraints
-            )
+            ),
+            updateManager
         )
     }
 
@@ -135,4 +139,9 @@ object RepositoryModule {
             scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
         )
     }
+
+    @Singleton
+    @Provides
+    fun provideRuStoreInAppUpdateManager(@ApplicationContext context: Context): RuStoreAppUpdateManager =
+        RuStoreAppUpdateManagerFactory.create(context)
 }

@@ -6,7 +6,8 @@ import com.lazyhat.novsuapp.R
 enum class Pages(val NavRoute: String, val labelRes: Int) {
     TimeTable("tt", R.string.timetable_label),
     EditGroup("eg", R.string.editgroup_label),
-    Settings("ss", R.string.settings_label)
+    Settings("ss", R.string.settings_label),
+    About("about", R.string.about_label)
 }
 
 class NavigationActions(private val navController: NavHostController) {
@@ -20,5 +21,9 @@ class NavigationActions(private val navController: NavHostController) {
 
     fun navigateToSettings() {
         navController.navigate(Pages.Settings.NavRoute)
+    }
+
+    fun navigateToAbout() {
+        navController.navigate(Pages.About.NavRoute)
     }
 }

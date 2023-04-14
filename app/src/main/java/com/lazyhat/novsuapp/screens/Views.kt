@@ -174,9 +174,9 @@ fun ListGridColorTheme(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(openDrawer: () -> Unit) {
+fun TopBar(openDrawer: () -> Unit, label: String) {
     TopAppBar(
-        title = { Text(text = stringResource(id = R.string.app_name)) },
+        title = { Text(text = label) },
         navigationIcon = {
             Icon(
                 imageVector = Icons.Filled.Menu,

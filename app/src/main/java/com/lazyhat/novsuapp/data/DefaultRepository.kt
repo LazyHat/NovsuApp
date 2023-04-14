@@ -11,7 +11,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
-
+import ru.rustore.sdk.appupdate.manager.RuStoreAppUpdateManager
 
 class DefaultRepository(
     private val mainDao: MainDao,
@@ -25,6 +25,7 @@ class DefaultRepository(
     private val lessonsWorkerPeriodicRequest: PeriodicWorkRequest.Builder,
     private val weekWorkerPeriodicRequest: PeriodicWorkRequest.Builder,
     private val getTimeWorkerPeriodicRequest: PeriodicWorkRequest.Builder,
+    private val updateManager: RuStoreAppUpdateManager,
     private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.Default
 ) : MainRepository {
 
@@ -109,6 +110,7 @@ class DefaultRepository(
 
     override fun getTimeStream(): Flow<TimeData> = tdDataStore.data
 
+    override fun getUpdateManager(): RuStoreAppUpdateManager = updateManager
 
 //Private
 

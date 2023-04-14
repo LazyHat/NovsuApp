@@ -31,7 +31,7 @@ fun LinkedCardStroke(
                 val endIndex = str.length
                 append(str)
                 addStyle(
-                    style = SpanStyle(color = MaterialTheme.colorScheme.secondary),
+                    style = SpanStyle(color = MaterialTheme.colorScheme.surfaceVariant),
                     startIndex,
                     endIndex
                 )

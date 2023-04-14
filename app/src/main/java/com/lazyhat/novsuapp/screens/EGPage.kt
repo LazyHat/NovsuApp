@@ -26,7 +26,7 @@ fun EGPage(
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
     Scaffold(
-        topBar = { TopBar(openDrawer) }
+        topBar = { TopBar(openDrawer, label = stringResource(id = R.string.editgroup_label)) }
     ) {
         Column(
             modifier = Modifier

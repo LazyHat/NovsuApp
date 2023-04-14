@@ -23,7 +23,7 @@ fun SettingsPage(
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { TopBar(openDrawer) }
+        topBar = { TopBar(openDrawer, label = stringResource(id = R.string.settings_label)) }
     ) { paddingValues ->
         Column(modifier = Modifier.padding(paddingValues)) {
             ListGridColorTheme(

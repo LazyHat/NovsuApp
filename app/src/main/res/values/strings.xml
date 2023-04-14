@@ -5,6 +5,7 @@
     <string name="timetable_label">TimeTable</string>
     <string name="editgroup_label">Edit group</string>
     <string name="settings_label">Settings</string>
+    <string name="about_label">About</string>
     //TimeTable
     ////Week
     <string name="tt_empty_day">Empty day</string>
@@ -61,4 +62,22 @@
     <string name="notification_timetable_changed">TimeTable was changed</string>
     <string name="eg_description">Subgroup changes are applied automatically.</string>
     <string name="tt_today">Now</string>
+    //Updating
+    <string name="update_available">Uptate is available</string>
+    <string name="update_get">Get update</string>
+    <string name="update_cancel">No, thanks</string>
+    <string name="update_installing">Installing</string>
+    <string name="update_downloading">Downloaded %1$d B from %2$d B</string>
+    <string name="update_downloaded">Downloaded</string>
+    <string name="update_failed">Failed</string>
+    <string name="update_pending">Pending</string>
+    <string name="update_unknown">In process</string>
+    <string name="update_install">Install</string>
+    <string name="about_bugs">Did you find a bug in the app? please fill out the form at the link</string>
+    <string name="about_link_p">link</string>
+    <string name="about_suggestions">Do you have any suggestions for future versions? please fill out the form at the link</string>
+    <string name="about_link">Link</string>
+    <string name="about_roadmap">Do you want to see the road map? follow the link to the table</string>
+    <string name="about_vk">VK group link</string>
+    <string name="about_link_i">link</string>
 </resources>

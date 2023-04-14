@@ -9,7 +9,17 @@ plugins {
 
 android {
     signingConfigs {
+        debug {
+            storeFile file('/home/lazyhat/AndroidStudioProjects/Keys/appkeystore.jks')
+            storePassword 'seva2004'
+            keyAlias 'lazyhatdev'
+            keyPassword 'lazyhat2004'
+        }
         release {
+        storeFile file('/home/lazyhat/AndroidStudioProjects/Keys/appkeystore.jks')
+            storePassword 'seva2004'
+            keyAlias 'lazyhatdev'
+            keyPassword 'lazyhat2004'
         }
     }
     namespace 'com.lazyhat.novsuapp'
@@ -20,23 +30,35 @@ android {
         minSdk 26
         targetSdk 33
         versionCode 8
-        versionName "1.5.6"
+        versionName "1.6.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary true
         }
+        signingConfig signingConfigs.release
     }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            debuggable false
+            signingConfig signingConfigs.release
+        }
+        debug {
+            signingConfig signingConfigs.debug
+            versionNameSuffix 'debug'
+            applicationIdSuffix '.debug'
+            debuggable true
+            jniDebuggable true
+            renderscriptDebuggable true
+            minifyEnabled true
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
         kapt {
             arguments {
                 arg("room.schemaLocation", "$projectDir/schemas".toString())
@@ -44,7 +66,7 @@ android {
         }
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
     buildFeatures {
         compose true
@@ -86,6 +108,7 @@ dependencies {
     //Google accompanist
     implementation "com.google.accompanist:accompanist-pager:$accompanist_version"
     implementation "com.google.accompanist:accompanist-pager-indicators:$accompanist_version"
+    implementation("com.google.accompanist:accompanist-navigation-animation:$accompanist_version")
     //Serialization
     implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0'
     //SystemUI
@@ -106,4 +129,6 @@ dependencies {
     implementation 'androidx.datastore:datastore:1.0.0'
     //Worker
     implementation "androidx.work:work-runtime-ktx:$work_version"
+    //RuStore inApp
+    implementation("ru.rustore.sdk:appupdate:0.1.0")
 }

@@ -45,11 +45,29 @@
     <string name="version">Версия</string>
     <string name="color_scheme">Цветовая палитра</string>
     <string name="default_theme">Стандартная</string>
-    <string name="pink_theme">Розовая</string>
+    <string name="pink_theme">Розовый нюд</string>
     <string name="black_theme">Черная</string>
     <string name="notification_update_lessons_in_progress">Обновление…</string>
     <string name="notification_timetable_changed">Расписание поменялось</string>
     <string name="eg_description">Изменения подгруппы применяются автоматически.</string>
     <string name="tt_today">Сейчас</string>
+    <string name="about_label">О приложении</string>
+    <string name="update_available">Доступно обновление</string>
+    <string name="update_get">Получить</string>
+    <string name="update_cancel">Нет, спасибо</string>
+    <string name="update_installing">Установка</string>
+    <string name="update_downloading">Загружено %1$d B из %2$d B</string>
+    <string name="update_downloaded">Загружено</string>
+    <string name="update_failed">Загрузка не удалась</string>
+    <string name="update_pending">В ожидании</string>
+    <string name="update_unknown">В процессе</string>
+    <string name="update_install">Установить</string>
+    <string name="about_bugs">Нашли баг в приложении? заполните пожалуйста форму по ссылке</string>
+    <string name="about_link_p">ссылке</string>
+    <string name="about_suggestions">У вас есть пожелания по будущим версиям? заполните пожалуйста форму по ссылке</string>
+    <string name="about_link">Ссылка</string>
+    <string name="about_roadmap">Хотите увидеть дорожную карту? переходите по ссылке на таблицу</string>
+    <string name="about_vk">Группа в ВК - ссылка</string>
+    <string name="about_link_i">ссылка</string>
 
 </resources>

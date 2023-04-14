@@ -36,6 +36,7 @@ fun AppModalDrawer(
                 navigateToTimeTable = { navigationActions.navigateToTimeTable() },
                 navigateToEditGroup = { navigationActions.navigateToEditGroup() },
                 navigateToSettings = { navigationActions.navigateToSettings() },
+                navigateToAbout = { navigationActions.navigateToAbout() },
                 closeDrawer = { coroutineScope.launch { drawerState.close() } }
             )
         }
@@ -50,6 +51,7 @@ private fun AppDrawer(
     navigateToTimeTable: () -> Unit,
     navigateToEditGroup: () -> Unit,
     navigateToSettings: () -> Unit,
+    navigateToAbout: () -> Unit,
     closeDrawer: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -58,36 +60,47 @@ private fun AppDrawer(
             .fillMaxHeight()
             .fillMaxWidth(0.7F)
             .background(MaterialTheme.colorScheme.background),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
+        verticalArrangement = Arrangement.SpaceBetween
     ) {
-        DrawerHeader(stringResource(id = R.string.menu))
-        Divider(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(2.dp),
-            color = MaterialTheme.colorScheme.surface
-        )
+        Column {
+            DrawerHeader(stringResource(id = R.string.menu))
+            Divider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(2.dp),
+                color = MaterialTheme.colorScheme.surface
+            )
+            Spacer(Modifier.height(100.dp))
+            DrawerButton(
+                label = stringResource(id = Pages.TimeTable.labelRes),
+                isSelected = currentRoute == Pages.TimeTable.NavRoute,
+                onClick = {
+                    navigateToTimeTable()
+                    closeDrawer()
+                }
+            )
+            DrawerButton(
+                label = stringResource(id = Pages.EditGroup.labelRes),
+                isSelected = currentRoute == Pages.EditGroup.NavRoute,
+                onClick = {
+                    navigateToEditGroup()
+                    closeDrawer()
+                }
+            )
+            DrawerButton(
+                label = stringResource(id = Pages.Settings.labelRes),
+                isSelected = currentRoute == Pages.Settings.NavRoute,
+                onClick = {
+                    navigateToSettings()
+                    closeDrawer()
+                }
+            )
+        }
         DrawerButton(
-            label = stringResource(id = Pages.TimeTable.labelRes),
-            isSelected = currentRoute == Pages.TimeTable.NavRoute,
+            label = stringResource(id = Pages.About.labelRes),
+            isSelected = currentRoute == Pages.About.NavRoute,
             onClick = {
-                navigateToTimeTable()
-                closeDrawer()
-            }
-        )
-        DrawerButton(
-            label = stringResource(id = Pages.EditGroup.labelRes),
-            isSelected = currentRoute == Pages.EditGroup.NavRoute,
-            onClick = {
-                navigateToEditGroup()
-                closeDrawer()
-            }
-        )
-        DrawerButton(
-            label = stringResource(id = Pages.Settings.labelRes),
-            isSelected = currentRoute == Pages.Settings.NavRoute,
-            onClick = {
-                navigateToSettings()
+                navigateToAbout()
                 closeDrawer()
             }
         )
@@ -103,7 +116,9 @@ private fun DrawerButton(
 ) {
     NavigationDrawerItem(
         label = { Text(text = label) },
-        modifier = Modifier.fillMaxWidth(0.8F),
+        modifier = Modifier
+            .fillMaxWidth(0.8F)
+            .padding(top = 5.dp, bottom = 5.dp),
         onClick = onClick,
         selected = isSelected,
         colors = NavigationDrawerItemDefaults.colors(
@@ -137,6 +152,7 @@ fun DrawerPreview() {
             navigateToTimeTable = {},
             navigateToEditGroup = {},
             navigateToSettings = {},
+            navigateToAbout = {},
             closeDrawer = {})
     }
 }
