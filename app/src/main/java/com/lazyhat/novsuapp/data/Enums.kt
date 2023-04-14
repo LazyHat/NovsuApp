@@ -15,11 +15,6 @@ enum class Institute(val id: String, val labelRes: Int, val labelRus: String) {
 
 enum class Week(val labelRes: Int) {
     Upper(R.string.tt_week_upper),
-    Lower(R.string.tt_week_lower)
-}
-
-enum class Pages(val labelRes: Int) {
-    TimeTable(R.string.timetable_label),
-    EditGroup(R.string.editgroup_label),
-    Settings(R.string.settings_label)
+    Lower(R.string.tt_week_lower),
+    All(R.string.tt_week_all)
 }

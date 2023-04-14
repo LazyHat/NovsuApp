@@ -1,18 +1,29 @@
 package com.lazyhat.novsuapp.viewmodels
 
 import androidx.lifecycle.ViewModel
-import com.lazyhat.novsuapp.data.GroupSpecs
-import com.lazyhat.novsuapp.data.MainModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import androidx.lifecycle.viewModelScope
+import com.lazyhat.novsuapp.data.MainRepository
+import com.lazyhat.novsuapp.data.datastore.settings.Settings
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainViewModel : ViewModel() {
-    private val _uiState = MutableStateFlow(MainModel())
-    val uiState: StateFlow<MainModel> = _uiState.asStateFlow()
 
-    fun updateGroupSpecs(newGroupSpecs: GroupSpecs) {
-        _uiState.update { mainModel -> mainModel.copy(groupSpecs = newGroupSpecs) }
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val mainRepository: MainRepository
+) : ViewModel() {
+
+    val uiState = mainRepository.getSettingsStream().stateIn(
+        viewModelScope, SharingStarted.WhileSubscribed(5000),
+        Settings()
+    )
+
+    fun onCreate() {
+        viewModelScope.launch {
+            mainRepository.initDataBase()
+        }
     }
 }

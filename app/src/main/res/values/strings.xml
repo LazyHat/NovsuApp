@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NovSU Compose</string>
+    <string name="app_name">NovSU TimeTable</string>
     <string name="menu">Menu</string>
     <string name="loading">Loading</string>
     <string name="timetable_label">TimeTable</string>
@@ -7,6 +7,8 @@
     <string name="settings_label">Settings</string>
     //TimeTable
     ////Week
+    <string name="tt_empty_day">Empty day</string>
+    <string name="tt_empty_week">Empty week</string>
     <string name="tt_week">Week</string>
     <string name="tt_week_upper">Upper</string>
     <string name="tt_week_lower">Lower</string>
@@ -24,8 +26,10 @@
     </string-array>
     ////
     ////Card
-    <string name="tt_time_one_hour">Hour</string>
-    <string name="tt_time_few_hours">Hours</string>
+    <plurals name="tt_time">
+        <item quantity="one">Hour</item>
+        <item quantity="few">Hours</item>
+    </plurals>
     <string name="tt_auditorium">Auditorium</string>
     <string name="tt_eg_subgroup">SubGroup</string>
     ////
@@ -35,17 +39,8 @@
     <string name="eg_grade">Grade</string>
     <string name="eg_group">Group</string>
     <string name="eg_apply">Apply</string>
+    <string name="eg_enter_subgroup">Enter subgroup</string>
     ////Institutes
-    <string-array name="institutes">
-        <item>IEIS</item>
-        <item>ICEUS</item>
-        <item>INPO</item>
-        <item>IBHI</item>
-        <item>IGUM</item>
-        <item>IMO</item>
-        <item>IUR</item>
-        <item>IPT</item>
-    </string-array>
     <string name="inst_IEIS">IEIS</string>
     <string name="inst_ICEUS">ICEUS</string>
     <string name="inst_INPO">INPO</string>
@@ -56,5 +51,14 @@
     <string name="inst_IPT">IPT</string>
     ////
     <string name="eg_not_entered">Not Entered</string>
-    //
+    ////Settings
+    <string name="version">Version</string>
+    <string name="color_scheme">Color scheme</string>
+    <string name="default_theme">Default</string>
+    <string name="pink_theme">Pink</string>
+    <string name="black_theme">Black</string>
+    <string name="notification_update_lessons_in_progress">Updating in progress</string>
+    <string name="notification_timetable_changed">TimeTable was changed</string>
+    <string name="eg_description">Subgroup changes are applied automatically.</string>
+    <string name="tt_today">Now</string>
 </resources>
