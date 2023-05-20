@@ -1,83 +1,91 @@
-<resources>
-    <string name="app_name">NovSU TimeTable</string>
-    <string name="menu">Menu</string>
-    <string name="loading">Loading</string>
-    <string name="timetable_label">TimeTable</string>
-    <string name="editgroup_label">Edit group</string>
-    <string name="settings_label">Settings</string>
-    <string name="about_label">About</string>
-    //TimeTable
-    ////Week
-    <string name="tt_empty_day">Empty day</string>
-    <string name="tt_empty_week">Empty week</string>
-    <string name="tt_week">Week</string>
-    <string name="tt_week_upper">Upper</string>
-    <string name="tt_week_lower">Lower</string>
-    <string name="tt_week_all">All</string>
-    ////
-    ////Days
-    <string-array name="tt_days">
-        <item>Mon</item>
-        <item>Tue</item>
-        <item>Wed</item>
-        <item>Thu</item>
-        <item>Fri</item>
-        <item>Sat</item>
-        <item>Sun</item>
-    </string-array>
-    ////
-    ////Card
-    <plurals name="tt_time">
-        <item quantity="one">Hour</item>
-        <item quantity="few">Hours</item>
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">НовГУ Расписание</string>
+    <string name="menu">Меню</string>
+    <string name="loading">Загрузка</string>
+    <string name="timetable_label">Расписание</string>
+    <string name="editgroup_label">Изменить группу</string>
+    <string name="settings_label">Настройки</string>
+    <string name="tt_empty_day">Нет расписания на этот день</string>
+    <string name="tt_empty_week">Пустая неделя)</string>
+    <string name="tt_week">Неделя</string>
+    <string name="tt_week_upper">Верхняя</string>
+    <string name="tt_week_lower">Нижняя</string>
+    <string name="tt_week_all">Все</string>
+    <string name="tt_auditorium">Аудитория</string>
+    <plurals name="tt_time" tools:ignore="ImpliedQuantity">
+        <item quantity="one">Час</item>
+        <item quantity="few">Часа</item>
+        <item quantity="many">Часов</item>
     </plurals>
-    <string name="tt_auditorium">Auditorium</string>
-    <string name="tt_eg_subgroup">SubGroup</string>
-    ////
-    //
-    //EditGroup
-    <string name="eg_institute">Institute</string>
-    <string name="eg_grade">Grade</string>
-    <string name="eg_group">Group</string>
-    <string name="eg_apply">Apply</string>
-    <string name="eg_enter_subgroup">Enter subgroup</string>
-    ////Institutes
-    <string name="inst_IEIS">IEIS</string>
-    <string name="inst_ICEUS">ICEUS</string>
-    <string name="inst_INPO">INPO</string>
-    <string name="inst_IBHI">IBHI</string>
-    <string name="inst_IGUM">IGUM</string>
-    <string name="inst_IMO">IMO</string>
-    <string name="inst_IUR">IUR</string>
-    <string name="inst_IPT">IPT</string>
-    ////
-    <string name="eg_not_entered">Not Entered</string>
-    ////Settings
-    <string name="version">Version</string>
-    <string name="color_scheme">Color scheme</string>
-    <string name="default_theme">Default</string>
-    <string name="pink_theme">Pink</string>
-    <string name="black_theme">Black</string>
-    <string name="notification_update_lessons_in_progress">Updating in progress</string>
-    <string name="notification_timetable_changed">TimeTable was changed</string>
-    <string name="eg_description">Subgroup changes are applied automatically.</string>
-    <string name="tt_today">Now</string>
-    //Updating
-    <string name="update_available">Uptate is available</string>
-    <string name="update_get">Get update</string>
-    <string name="update_cancel">No, thanks</string>
-    <string name="update_installing">Installing</string>
-    <string name="update_downloading">Downloaded %1$d B from %2$d B</string>
-    <string name="update_downloaded">Downloaded</string>
-    <string name="update_failed">Failed</string>
-    <string name="update_pending">Pending</string>
-    <string name="update_unknown">In process</string>
-    <string name="update_install">Install</string>
-    <string name="about_bugs">Did you find a bug in the app? please fill out the form at the link</string>
-    <string name="about_link_p">link</string>
-    <string name="about_suggestions">Do you have any suggestions for future versions? please fill out the form at the link</string>
-    <string name="about_link">Link</string>
-    <string name="about_roadmap">Do you want to see the road map? follow the link to the table</string>
-    <string name="about_vk">VK group link</string>
-    <string name="about_link_i">link</string>
+    <string name="tt_eg_subgroup">Подгруппа</string>
+    <string name="eg_institute">Институт</string>
+    <string name="eg_grade">Курс</string>
+    <string name="eg_group">Группа</string>
+    <string name="eg_apply">Сохранить</string>
+    <string name="eg_enter_subgroup">Указать подгруппу</string>
+    <string name="inst_IEIS">ИЭИС</string>
+    <string name="inst_ICEUS">ИЦЕУС</string>
+    <string name="inst_INPO">ИНПО</string>
+    <string name="inst_IBHI">ИБХИ</string>
+    <string name="inst_IGUM">ИГУМ</string>
+    <string name="inst_IMO">ИМО</string>
+    <string name="inst_IUR">ИЮР</string>
+    <string name="inst_IPT">ИПТ</string>
+    <string name="eg_not_entered">Не указано</string>
+    <string-array name="tt_days">
+        <item>Пн</item>
+        <item>Вт</item>
+        <item>Ср</item>
+        <item>Чт</item>
+        <item>Пт</item>
+        <item>Сб</item>
+        <item>Вс</item>
+    </string-array>
+    <string name="version">Версия</string>
+    <string name="color_scheme">Цветовая палитра</string>
+    <string name="default_theme">Стандартная</string>
+    <string name="pink_theme">Розовый нюд</string>
+    <string name="black_theme">Черная</string>
+    <string name="notification_update_lessons_in_progress">Обновление…</string>
+    <string name="notification_timetable_changed">Расписание поменялось</string>
+    <string name="eg_description">Изменения подгруппы применяются автоматически.</string>
+    <string name="tt_today">Сейчас</string>
+    <string name="about_label">О приложении</string>
+    <string name="update_available">Доступно обновление</string>
+    <string name="update_get">Получить</string>
+    <string name="update_cancel">Нет, спасибо</string>
+    <string name="update_installing">Установка</string>
+    <string name="update_downloading">Загружено %1$d B из %2$d B</string>
+    <string name="update_downloaded">Загружено</string>
+    <string name="update_failed">Загрузка не удалась</string>
+    <string name="update_pending">В ожидании</string>
+    <string name="update_unknown">В процессе</string>
+    <string name="update_install">Установить</string>
+    <string name="about_bugs">Нашли баг в приложении? заполните пожалуйста форму по ссылке</string>
+    <string name="about_link_p">ссылке</string>
+    <string name="about_suggestions">У вас есть пожелания по будущим версиям? заполните пожалуйста форму по ссылке</string>
+    <string name="about_link">Ссылка</string>
+    <string name="about_roadmap">Хотите увидеть дорожную карту? переходите по ссылке на таблицу</string>
+    <string name="about_vk">Группа в ВК - ссылка</string>
+    <string name="about_link_i">ссылка</string>
+    <string name="auth_login_label">Вход</string>
+    <string name="auth_login">Логин</string>
+    <string name="auth_pass">Пароль</string>
+    <string name="auth_toLogin">Войти</string>
+    <string name="auth_cancel">Войти гостем</string>
+    <string name="connection_error_msg">Проверьте подключение интернета</string>
+    <string name="connection_error_dismiss">Я знаю</string>
+    <string name="scores_label">Оценки</string>
+    <string name="tt_change_pass">Понял!</string>
+    <string name="tt_change_pass_all">Убрать все изменения</string>
+    <string name="register_toRegister">Зарегистрироватся</string>
+    <string name="auth_username">Никнейм</string>
+    <string name="auth_400">Неверные значения</string>
+    <string name="auth_pass_v">Подтвердите пароль</string>
+    <string name="auth_409">Пользователь с таким логином уже существует</string>
+    <string name="tt_type_lec">лек.</string>
+    <string name="tt_type_pr">пр.</string>
+    <string name="tt_type_lab">лаб.</string>
+
 </resources>

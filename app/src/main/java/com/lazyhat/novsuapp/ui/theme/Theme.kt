@@ -7,20 +7,20 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
-fun NovsuTheme(
-    scheme: ColorScheme,
+fun AppTheme(
+    scheme: ColorScheme = ColorPalettes.DEFAULT.scheme,
     content: @Composable () -> Unit
 ) {
     rememberSystemUiController().setSystemBarsColor(color = scheme.background)
 
     MaterialTheme(
         colorScheme = scheme,
-        content = content,
         shapes = Shapes(
             extraSmall = RoundedCornerShape(1.dp),
             small = RoundedCornerShape(2.dp),
             medium = RoundedCornerShape(4.dp),
-            large = RoundedCornerShape(6.dp)
+            large = RoundedCornerShape(6.dp),
+            extraLarge = RoundedCornerShape(6.dp)
         )
-    )
+    ) { content() }
 }
