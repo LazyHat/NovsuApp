@@ -3,6 +3,7 @@ package com.lazyhat.novsuapp.data.models
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class LessonDay(
-    val lessons: List<Lesson>
+data class TimeTable(
+    val parameters: TimeTableParameters,
+    val timetable: List<LessonDay>
 )

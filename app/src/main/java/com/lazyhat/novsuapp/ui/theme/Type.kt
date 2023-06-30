@@ -13,23 +13,17 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         fontStyle = FontStyle.Italic,
         fontSize = 30.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
     ),
     displayMedium = TextStyle(
         fontFamily = FontFamily.SansSerif,
         fontWeight = FontWeight.Normal,
         fontStyle = FontStyle.Italic,
         fontSize = 20.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
     ),
     displaySmall = TextStyle(
         fontFamily = FontFamily.SansSerif,
         fontWeight = FontWeight.Normal,
         fontStyle = FontStyle.Italic,
         fontSize = 16.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
     )
 )

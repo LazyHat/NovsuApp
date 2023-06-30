@@ -5,8 +5,10 @@ import com.lazyhat.novsuapp.R
 import com.lazyhat.novsuapp.data.models.LessonType.Companion.LABORATORY
 import com.lazyhat.novsuapp.data.models.LessonType.Companion.LECTURE
 import com.lazyhat.novsuapp.data.models.LessonType.Companion.PRACTICE
+import kotlinx.serialization.Serializable
 
-class LessonType(val types: List<Int>) {
+@Serializable
+class LessonType(private val types: List<Int>) {
     constructor(vararg types: Int) : this(types.toList())
 
     companion object {
@@ -31,8 +33,4 @@ class LessonType(val types: List<Int>) {
         level = DeprecationLevel.ERROR
     )
     override fun toString(): String = throw NotImplementedError()
-}
-
-fun c() {
-    val LessonType = LessonType(listOf(LECTURE, PRACTICE, LABORATORY, 3))
 }
